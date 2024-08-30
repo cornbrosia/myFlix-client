@@ -1,31 +1,28 @@
 import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
+import { useState, useEffect } from "react";
 
 export const MainView = () => {
-  const [movies, setMovies] = useState([
-    {
-      id: 1,
-      title: "Superbad",
-      image:
-        "https://th.bing.com/th/id/OIP.eSGMaw1CsCp6O0j3eWnfEwHaEK?rs=1&pid=ImgDetMain",
-      director: "Judd Apatow"
-    },
-    {
-      id: 2,
-      title: "Jurassic Park",
-      image:
-        "https://th.bing.com/th/id/R.43c822ade1bde86a848814525645d773?rik=4q8SP8PlkvBtvg&riu=http%3a%2f%2fimg3.wikia.nocookie.net%2f__cb20141018180224%2fdinosaurs%2fimages%2f2%2f20%2fJurassic-Park-Logo.jpg&ehk=CNFsAUYLjV8WZ8CWDDD20x%2bK4TC5Z4l1UN%2bukUYerdU%3d&risl=&pid=ImgRaw&r=0",
-      director: "Steven Spielberg"
-    },
-    {
-      id: 3,
-      title: "Arrival",
-      image:
-        "https://th.bing.com/th/id/R.28b57cbca36bb552a2fc173dc237d135?rik=xUHxzAOIHtY%2fSw&pid=ImgRaw&r=0",
-      director: "Denis Villeneuve"
-    },
-  ]);
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetch("https://my-flix-site-1e2e2d6bc417.herokuapp.com/movies")
+      .then((response) => response.json())
+      .then((data) => {
+        const booksFromApi = data.docs.map((doc) => {
+          return {
+            id: doc.key,
+            title: doc.title,
+            image:
+            `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+            director: doc.author_name?.[0]
+          };
+        });
+
+        setMovies(booksFromApi);
+      });
+  }, []);
 
   const [selectedMovie, setSelectedMovie] = useState(null);
 

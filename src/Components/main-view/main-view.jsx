@@ -7,10 +7,10 @@ export const MainView = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("https://my-flix-site-1e2e2d6bc417.herokuapp.com/movies")
+    fetch("https://mega-movies-5942d1a72620.herokuapp.com/movies")
       .then((response) => response.json())
       .then((data) => {
-        const booksFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data.docs.map((doc) => {
           return {
             id: doc.key,
             title: doc.title,
@@ -20,7 +20,7 @@ export const MainView = () => {
           };
         });
 
-        setMovies(booksFromApi);
+        setMovies(moviesFromApi);
       });
   }, []);
 

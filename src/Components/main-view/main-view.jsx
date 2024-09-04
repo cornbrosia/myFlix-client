@@ -15,7 +15,7 @@ export const MainView = () => {
             id: doc._id,
             title: doc?.Title,
             image:
-            `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
+            doc.ImagePath,
             director: doc.Director?.Name
           };
         });

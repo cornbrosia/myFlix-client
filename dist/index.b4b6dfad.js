@@ -584,8 +584,8 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"cR6sb":[function(require,module,exports) {
-var Refresh = require("ce5a77a3eb26d688");
-var ErrorOverlay = require("90f0ecd50440a9e0");
+var Refresh = require("d62939c4d536dab7");
+var ErrorOverlay = require("a4b170c5e518d80f");
 Refresh.injectIntoGlobalHook(window);
 window.$RefreshReg$ = function() {};
 window.$RefreshSig$ = function() {
@@ -604,11 +604,11 @@ window.addEventListener("parcelhmraccept", ()=>{
     ErrorOverlay.dismissRuntimeErrors();
 });
 
-},{"ce5a77a3eb26d688":"bzbvz","90f0ecd50440a9e0":"k4EJY"}],"bzbvz":[function(require,module,exports) {
+},{"d62939c4d536dab7":"bzbvz","a4b170c5e518d80f":"k4EJY"}],"bzbvz":[function(require,module,exports) {
 "use strict";
-module.exports = require("6f9eebd8eae50d0e");
+module.exports = require("44539035d52b5757");
 
-},{"6f9eebd8eae50d0e":"7hn8c"}],"7hn8c":[function(require,module,exports) {
+},{"44539035d52b5757":"7hn8c"}],"7hn8c":[function(require,module,exports) {
 /** @license React v0.9.0
  * react-refresh-runtime.development.js
  *
@@ -1069,7 +1069,7 @@ module.exports = require("6f9eebd8eae50d0e");
 })();
 
 },{}],"k4EJY":[function(require,module,exports) {
-var process = require("924d8d7429a8b5cd");
+var process = require("3d2a02dce1f7f9db");
 !function(e, t) {
     module.exports = t();
 }(window, function() {
@@ -2799,7 +2799,7 @@ var process = require("924d8d7429a8b5cd");
     ]);
 });
 
-},{"924d8d7429a8b5cd":"d5jf4"}],"d5jf4":[function(require,module,exports) {
+},{"3d2a02dce1f7f9db":"d5jf4"}],"d5jf4":[function(require,module,exports) {
 // shim for using process in browser
 var process = module.exports = {};
 // cached from whatever global is present so that test runners that stub it
@@ -27246,12 +27246,12 @@ const MainView = ()=>{
     const [movies, setMovies] = (0, _react.useState)([]);
     (0, _react.useEffect)(()=>{
         fetch("https://mega-movies-5942d1a72620.herokuapp.com/movies").then((response)=>response.json()).then((data)=>{
-            const moviesFromApi = data.docs.map((doc)=>{
+            const moviesFromApi = data.map((doc)=>{
                 return {
-                    id: doc.key,
-                    title: doc.title,
+                    id: doc._id,
+                    title: doc?.Title,
                     image: `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
-                    director: doc.author_name?.[0]
+                    director: doc.Director?.Name
                 };
             });
             setMovies(moviesFromApi);
@@ -27335,7 +27335,7 @@ exports.export = function(dest, destName, get) {
 
 },{}],"gtyyW":[function(require,module,exports) {
 "use strict";
-var Refresh = require("a56f651bca5cb4d0");
+var Refresh = require("77a45545501c4444");
 function debounce(func, delay) {
     {
         let timeout = undefined;
@@ -27471,7 +27471,7 @@ function registerExportsForReactRefresh(module1) {
     }
 }
 
-},{"a56f651bca5cb4d0":"bzbvz"}],"bwuIu":[function(require,module,exports) {
+},{"77a45545501c4444":"bzbvz"}],"bwuIu":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$67b2 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -27499,7 +27499,7 @@ const MovieCard = ({ movie, onMovieClick })=>{
 _c = MovieCard;
 MovieCard.propTypes = {
     movie: (0, _propTypesDefault.default).shape({
-        title: (0, _propTypesDefault.default).string.isRequired,
+        title: (0, _propTypesDefault.default).string,
         image: (0, _propTypesDefault.default).string.isRequired,
         director: (0, _propTypesDefault.default).string
     }).isRequired,

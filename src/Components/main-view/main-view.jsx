@@ -10,13 +10,13 @@ export const MainView = () => {
     fetch("https://mega-movies-5942d1a72620.herokuapp.com/movies")
       .then((response) => response.json())
       .then((data) => {
-        const moviesFromApi = data.docs.map((doc) => {
+        const moviesFromApi = data.map((doc) => {
           return {
-            id: doc.key,
-            title: doc.title,
+            id: doc._id,
+            title: doc?.Title,
             image:
             `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`,
-            director: doc.author_name?.[0]
+            director: doc.Director?.Name
           };
         });
 

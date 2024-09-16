@@ -2,7 +2,7 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { useState, useEffect } from "react";
 import { LoginView } from "../login-view/login-view";
-import {SignupView} from "../signup-view/signup-view";
+import { SignupView } from "../signup-view/signup-view";
 
 export const MainView = () => {
   // Get stored user and token from localStorage
@@ -15,22 +15,36 @@ export const MainView = () => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  // Fetch movies when token is available
+  // Only fetch movies if the user is logged in (token exists)
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      return;
+    }
 
     fetch("https://mega-movies-5942d1a72620.herokuapp.com/movies", {
-      headers: { Authorization: `Bearer ${token}` },
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${token}`,  // Ensure token is included
+        "Content-Type": "application/json",
+      },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Unauthorized");
+        }
+        return response.json();
+      })
       .then((data) => {
         const moviesFromApi = data.map((doc) => ({
           id: doc._id,
-          title: doc?.Title,
+          title: doc.Title,
           image: doc.ImagePath,
           director: doc.Director?.Name,
         }));
         setMovies(moviesFromApi);
+      })
+      .catch((error) => {
+        console.error("Error fetching movies:", error);
       });
   }, [token]);
 
@@ -51,14 +65,15 @@ export const MainView = () => {
     localStorage.removeItem("token");
   };
 
-  // If the user is not logged in, show the login view
+  // If the user is not logged in, show the login/signup views
   if (!user) {
     return (
       <>
-        <LoginView onLoggedIn={(user, token) => {
-          setUser(user);
-          setToken(token);
-        }} />
+        <LoginView
+          onLoggedIn={(user, token) => {
+            handleLogin(user, token)
+          }}
+        />
         <p>or</p>
         <SignupView />
       </>

@@ -28343,6 +28343,7 @@ parcelHelpers.export(exports, "MovieView", ()=>MovieView);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
+var _movieViewScss = require("./movie-view.scss");
 const MovieView = ({ movie, onBackClick })=>{
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
@@ -28406,7 +28407,11 @@ const MovieView = ({ movie, onBackClick })=>{
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
                 onClick: onBackClick,
-                children: "Back to Main View"
+                className: "back-button",
+                style: {
+                    cursor: "pointer"
+                },
+                children: "Back"
             }, void 0, false, {
                 fileName: "src/components/movie-view/movie-view.jsx",
                 lineNumber: 17,
@@ -28428,7 +28433,7 @@ $RefreshReg$(_c, "MovieView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"5WaBG","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"gtyyW","react":"21dqq"}],"9YtA0":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"5WaBG","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"gtyyW","react":"21dqq","./movie-view.scss":"jnlR5"}],"jnlR5":[function() {},{}],"9YtA0":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$9fee = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -28549,11 +28554,50 @@ var _react = require("react");
 var _s = $RefreshSig$();
 const SignupView = ()=>{
     _s();
-    const [username1, setUsername] = (0, _react.useState)("");
-    const [password1, setPassword] = (0, _react.useState)("");
-    const [email1, setEmail] = (0, _react.useState)("");
-    const [birthday1, setBirthday] = (0, _react.useState)("");
-    const handleSubmit = (event)=>{};
+    const [username, setUsername] = (0, _react.useState)("");
+    const [password, setPassword] = (0, _react.useState)("");
+    const [email, setEmail] = (0, _react.useState)("");
+    const [birthday, setBirthday] = (0, _react.useState)("");
+    const handleSubmit = (event)=>{
+        event.preventDefault(); // Prevent form from refreshing
+        const data = {
+            Username: username,
+            Password: password,
+            Email: email,
+            Birthday: birthday // Capitalized to match the database
+        };
+        fetch("https://mega-movies-5942d1a72620.herokuapp.com/users", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((response)=>{
+            console.log("Response status:", response.status); // Log response status
+            // Try to parse the response as JSON, but also return raw response in case of parsing failure
+            return response.json().catch(()=>{
+                console.error("Response could not be parsed as JSON:", response);
+                return {
+                    error: "Could not parse server response"
+                };
+            }).then((data)=>({
+                    data,
+                    status: response.status
+                }));
+        }).then(({ data, status })=>{
+            console.log("Response data:", data); // Log response data
+            if (status === 200 || status === 201) {
+                alert("Signup successful");
+                window.location.reload(); // Refresh the page after successful signup
+            } else {
+                console.error("Signup failed with status:", status, "Data:", data);
+                alert("Signup failed: " + (data.error || "Unknown error"));
+            }
+        }).catch((error)=>{
+            console.error("Error during signup:", error); // Log error details
+            alert("Signup failed: " + error.message);
+        });
+    };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("form", {
         onSubmit: handleSubmit,
         children: [
@@ -28562,19 +28606,19 @@ const SignupView = ()=>{
                     "Username:",
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
                         type: "text",
-                        value: username1,
+                        value: username,
                         onChange: (e)=>setUsername(e.target.value),
                         required: true,
                         minLength: "3"
                     }, void 0, false, {
                         fileName: "src/components/signup-view/signup-view.jsx",
-                        lineNumber: 15,
+                        lineNumber: 58,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 13,
+                lineNumber: 56,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
@@ -28582,18 +28626,18 @@ const SignupView = ()=>{
                     "Password:",
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
                         type: "password",
-                        value: password1,
+                        value: password,
                         onChange: (e)=>setPassword(e.target.value),
                         required: true
                     }, void 0, false, {
                         fileName: "src/components/signup-view/signup-view.jsx",
-                        lineNumber: 25,
+                        lineNumber: 68,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 23,
+                lineNumber: 66,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
@@ -28601,18 +28645,18 @@ const SignupView = ()=>{
                     "Email:",
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
                         type: "email",
-                        value: email1,
+                        value: email,
                         onChange: (e)=>setEmail(e.target.value),
                         required: true
                     }, void 0, false, {
                         fileName: "src/components/signup-view/signup-view.jsx",
-                        lineNumber: 34,
+                        lineNumber: 77,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 32,
+                lineNumber: 75,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("label", {
@@ -28620,18 +28664,18 @@ const SignupView = ()=>{
                     "Birthday:",
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
                         type: "date",
-                        value: birthday1,
+                        value: birthday,
                         onChange: (e)=>setBirthday(e.target.value),
                         required: true
                     }, void 0, false, {
                         fileName: "src/components/signup-view/signup-view.jsx",
-                        lineNumber: 43,
+                        lineNumber: 86,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 41,
+                lineNumber: 84,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -28639,39 +28683,18 @@ const SignupView = ()=>{
                 children: "Submit"
             }, void 0, false, {
                 fileName: "src/components/signup-view/signup-view.jsx",
-                lineNumber: 50,
+                lineNumber: 93,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/signup-view/signup-view.jsx",
-        lineNumber: 12,
+        lineNumber: 55,
         columnNumber: 5
     }, undefined);
 };
 _s(SignupView, "jsOQN3GC2XlBG9ITlzCdpyJOnso=");
 _c = SignupView;
-const handleSubmit = (event)=>{
-    event.preventDefault();
-    const data = {
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday
-    };
-    fetch("SIGNUP_URL", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then((response)=>{
-        if (response.ok) {
-            alert("Signup successful");
-            window.location.reload();
-        } else alert("Signup failed");
-    });
-};
 var _c;
 $RefreshReg$(_c, "SignupView");
 

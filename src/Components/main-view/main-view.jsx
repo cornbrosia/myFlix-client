@@ -3,6 +3,7 @@ import { MovieView } from "../movie-view/movie-view";
 import { useState, useEffect } from "react";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
+import { Row, Col, Button } from "react-bootstrap";
 
 export const MainView = () => {
   // Get stored user and token from localStorage
@@ -24,7 +25,7 @@ export const MainView = () => {
     fetch("https://mega-movies-5942d1a72620.herokuapp.com/movies", {
       method: 'GET',
       headers: {
-        "Authorization": `Bearer ${token}`,  // Ensure token is included
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
@@ -50,6 +51,7 @@ export const MainView = () => {
 
   // Handle login and store user/token in localStorage
   const handleLogin = (user, token) => {
+    console.log("*** handleLogin");
     setUser(user);
     setToken(token);
     localStorage.setItem("user", JSON.stringify(user));
@@ -66,41 +68,45 @@ export const MainView = () => {
   };
 
   // If the user is not logged in, show the login/signup views
-  if (!user) {
-    return (
-      <>
-        <LoginView
-          onLoggedIn={(user, token) => {
-            handleLogin(user, token)
-          }}
-        />
-        <p>or</p>
-        <SignupView />
-      </>
-    );
-  }
-
-  // If a movie is selected, show the MovieView
-  if (selectedMovie) {
-    return <MovieView movie={selectedMovie} onBackClick={() => setSelectedMovie(null)} />;
-  }
-
-  // If no movies are available, show empty state
-  if (movies.length === 0) {
-    return <div>The list is empty!</div>;
-  }
-
-  // Render the list of movies
   return (
-    <div>
-      <button onClick={handleLogout}>Logout</button>
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie.id}
-          movie={movie}
-          onMovieClick={(newSelectedMovie) => setSelectedMovie(newSelectedMovie)}
-        />
-      ))}
-    </div>
+    <Row>
+      {!user ? (
+        <Col md={5}>
+          {/* Pass the handleLogin function to the LoginView */}
+          <LoginView onLoggedIn={handleLogin} />
+          or
+          <SignupView />
+        </Col>
+      ) : selectedMovie ? (
+        <Col md={9}>
+          <MovieView
+            movie={selectedMovie}
+            onBackClick={() => setSelectedMovie(null)}
+          />
+        </Col>
+      ) : movies.length === 0 ? (
+        <div>The list is empty!</div>
+      ) : (
+        <>
+          {/* Sign-out button appears here */}
+          <Button onClick={handleLogout} variant="danger" className="mb-3">
+            Sign Out
+          </Button>
+
+          <Row>
+            {movies.map((movie) => (
+              <Col className = "mb-5" key={movie.id} md={3}>
+                <MovieCard
+                  movie={movie}
+                  onMovieClick={(newSelectedMovie) => {
+                    setSelectedMovie(newSelectedMovie);
+                  }}
+                />
+              </Col>
+            ))}
+          </Row>
+        </>
+      )}
+    </Row>
   );
 };

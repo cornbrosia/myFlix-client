@@ -1,11 +1,14 @@
 import React from 'react';
 import "./movie-view.scss";
+import { Link } from "react-router-dom";
 
 export const MovieView = ({ movie, onBackClick }) => {
+  if (!movie) return null; // If no movie is selected, don't render
+
   return (
     <div className="movie-view">
-      <div className="movie-image-container">
-        <img className="movie-image" src={movie.image} alt={`${movie.title} poster`} />
+      <div>
+        <img className="w-100" src={movie.image} alt={`${movie.title} poster`} />
       </div>
       <div>
         <span>Title: </span>
@@ -15,7 +18,7 @@ export const MovieView = ({ movie, onBackClick }) => {
         <span>Director: </span>
         <span>{movie.director}</span>
       </div>
-      <button onClick={onBackClick} className="back-button" style={{ cursor: "pointer" }}>
+      <button onClick={onBackClick} className="back-button">
         Back
       </button>
     </div>

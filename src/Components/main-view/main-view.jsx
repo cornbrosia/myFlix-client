@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { Row, Col, Button } from "react-bootstrap";
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
@@ -12,20 +12,17 @@ export const MainView = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(null);
 
-  // On app load, check if user and token are in localStorage
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (storedToken && storedUser) {
-      setToken(storedToken);  // Set the token from localStorage
-      setUser(storedUser);    // Set the user from localStorage
+      setToken(storedToken);
+      setUser(storedUser);
     }
   }, []);
 
-  // Fetch movies when the token is available (user is logged in)
   useEffect(() => {
     if (token) {
       fetchMovies();
@@ -57,7 +54,7 @@ export const MainView = () => {
 
   const handleUserUpdate = (updatedUserData) => {
     setUser(updatedUserData);
-    localStorage.setItem("user", JSON.stringify(updatedUserData)); 
+    localStorage.setItem("user", JSON.stringify(updatedUserData));
   };
 
   const handleLogout = () => {
@@ -69,7 +66,7 @@ export const MainView = () => {
 
   return (
     <Router>
-      <NavigationBar user={user} onLoggedOut={handleLogout} /> 
+      <NavigationBar user={user} onLoggedOut={handleLogout} />
 
       <Row className="justify-content-md-center">
         <Routes>
@@ -78,12 +75,14 @@ export const MainView = () => {
             element={
               !user ? (
                 <Col md={5}>
-                  <LoginView onLoggedIn={(user, token) => {
-                    setUser(user);
-                    setToken(token);
-                    localStorage.setItem("user", JSON.stringify(user));
-                    localStorage.setItem("token", token);
-                  }} />
+                  <LoginView
+                    onLoggedIn={(user, token) => {
+                      setUser(user);
+                      setToken(token);
+                      localStorage.setItem("user", JSON.stringify(user));
+                      localStorage.setItem("token", token);
+                    }}
+                  />
                 </Col>
               ) : (
                 <Navigate to="/" />
@@ -118,27 +117,21 @@ export const MainView = () => {
             }
           />
           <Route
+            path="/movies/:movieId"
+            element={<MovieDetail movies={movies} />}
+          />
+          <Route
             path="/"
             element={
               !user ? (
                 <Navigate to="/login" />
-              ) : selectedMovie ? (
-                <Col md={9}>
-                  <MovieView
-                    movie={selectedMovie}
-                    onBackClick={() => setSelectedMovie(null)}
-                  />
-                </Col>
               ) : movies.length === 0 ? (
                 <div>The list is empty!</div>
               ) : (
                 <Row>
                   {movies.map((movie) => (
                     <Col className="mb-5" key={movie.id} md={3}>
-                      <MovieCard
-                        movie={movie}
-                        onMovieClick={(newSelectedMovie) => setSelectedMovie(newSelectedMovie)}
-                      />
+                      <MovieCard movie={movie} />
                     </Col>
                   ))}
                 </Row>
@@ -148,5 +141,21 @@ export const MainView = () => {
         </Routes>
       </Row>
     </Router>
+  );
+};
+
+// MovieDetail Component to handle fetching movie details from URL
+const MovieDetail = ({ movies }) => {
+  const { movieId } = useParams();
+  const movie = movies.find((m) => m.id === movieId);
+
+  if (!movie) {
+    return <div>Movie not found!</div>;
+  }
+
+  return (
+    <Col md={9}>
+      <MovieView movie={movie} />
+    </Col>
   );
 };

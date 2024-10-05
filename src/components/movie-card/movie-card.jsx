@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 
 export const MovieCard = ({ movie, onMovieClick }) => {
   return (
-    <Card className="h-100">
+    <Card className="h-100" onClick={() => onMovieClick(movie)}> {/* Added onClick */}
       <Card.Img variant="top" src={movie.image} alt={`${movie.title} poster`} />
       <Card.Body>
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text>Directed by: {movie.director}</Card.Text>
-        <Link to={`/movies/${encodeURIComponent(movie.id)}`}> 
+        <Link to={`/movies/${encodeURIComponent(movie.id)}`}>
+          View Details
         </Link>
       </Card.Body>
     </Card>
@@ -22,5 +23,6 @@ MovieCard.propTypes = {
     title: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     director: PropTypes.string,
-  }).isRequired
+  }).isRequired,
+  onMovieClick: PropTypes.func.isRequired,  // Add this to ensure it's passed as a prop
 };

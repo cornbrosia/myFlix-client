@@ -9,7 +9,7 @@ export const MovieView = ({ movie, onBackClick, onFavorite }) => {
         <img src={movie.image} alt={`${movie.title} poster`} />
       </div>
       <div className="movie-details">
-        <h1>{movie.title}</h1>
+        <h1>{movie.title}</h1> 
         <p>Directed by: {movie.director}</p>
         <p>Summary: {movie.description}</p>
         <Button onClick={onBackClick}>Back</Button>

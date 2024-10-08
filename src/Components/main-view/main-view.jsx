@@ -68,17 +68,42 @@ export const MainView = () => {
     localStorage.clear();
   };
 
-  const handleFavorite = (movieId) => {
-    let updatedFavorites = [];
+  const handleFavorite = (movieTitle) => {
+    console.log("Selected Movie Title:", movieTitle); // Log to confirm movie title
+    const favoriteMovies = user.FavoriteMovies || []; // Use user's existing favorites
 
-    if (favorites.includes(movieId)) {
-      updatedFavorites = favorites.filter((id) => id !== movieId);
-    } else {
-      updatedFavorites = [...favorites, movieId];
+    // Check if the movie is already in the favorites list
+    if (favoriteMovies.includes(movieTitle) ) {
+      alert("Movie is already in favorites.");
+      console.log("Movie already in favorites:", movieTitle);
+      return;
     }
 
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    // Add the movie to the user's FavoriteMovies list
+    const newFavorites = [...favoriteMovies, movieTitle];
+    console.log("Updated Favorite Movies List:", newFavorites);
+
+    // Update the user in the backend
+    fetch(`https://mega-movies-5942d1a72620.herokuapp.com/users/${user.Username}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Use the token for authorization
+      },
+      body: JSON.stringify({ ...user, FavoriteMovies: newFavorites }),
+    })
+      .then((response) => {
+        console.log("Backend response status:", response.status);
+        return response.json();
+      })
+      .then((updatedUserData) => {
+        console.log("Updated user data from backend:", updatedUserData);
+        setUser(updatedUserData); // Update the local user state
+        alert("Movie added to favorites!");
+      })
+      .catch((error) => {
+        console.error("Error updating user favorites:", error); // Log any error
+      });
   };
 
   // Filter the user's favorite movies

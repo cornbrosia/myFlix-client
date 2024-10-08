@@ -10,7 +10,7 @@ export const MovieCard = ({ movie, onFavorite }) => {
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text>Directed by: {movie.director}</Card.Text>
         <Link to={`/movies/${movie._id}`}>View Details</Link>
-        <Button variant="primary" className="mt-2" onClick={() => onFavorite(movie._id)}>
+        <Button variant="primary" className="mt-2" onClick={() => onFavorite(movie.title)}>
           Favorite
         </Button>
       </Card.Body>

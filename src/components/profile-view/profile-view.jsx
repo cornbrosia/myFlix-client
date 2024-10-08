@@ -12,12 +12,10 @@ export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate }) => {
 
   const navigate = useNavigate();
 
-  // Fetch user info from API (optional, if you need to refresh user data)
-  useEffect(() => {
-    if (!user) {
-      // Fetch user from the API (optional if you already have user info)
-    }
-  }, [user]);
+  // If user is not defined, show a loading message or handle it safely
+  if (!user) {
+    return <div>Loading...</div>; // Prevents the component from breaking if user is undefined
+  }
 
   // Handle input change for the update form
   const handleChange = (e) => {
@@ -76,7 +74,7 @@ export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate }) => {
   };
 
   // Filter user's favorite movies
-  const favoriteMovies = movies.filter((m) => user.FavoriteMovies.includes(m._id));
+  const favoriteMovies = movies.filter((m) => user.FavoriteMovies.includes(m.title));
 
   return (
     <div className="profile-view">

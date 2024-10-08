@@ -12,14 +12,17 @@ export const MainView = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [movies, setMovies] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUser = JSON.parse(localStorage.getItem("user"));
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(storedUser);
+      setFavorites(storedFavorites);
     }
   }, []);
 
@@ -44,6 +47,7 @@ export const MainView = () => {
           title: doc.Title,
           image: doc.ImagePath,
           director: doc.Director?.Name,
+          description: doc.Description,
         }));
         setMovies(moviesFromApi);
       })
@@ -63,6 +67,24 @@ export const MainView = () => {
     setMovies([]);
     localStorage.clear();
   };
+
+  const handleFavorite = (movieId) => {
+    let updatedFavorites = [];
+
+    if (favorites.includes(movieId)) {
+      updatedFavorites = favorites.filter((id) => id !== movieId);
+    } else {
+      updatedFavorites = [...favorites, movieId];
+    }
+
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  };
+
+  // Filter the user's favorite movies
+  const favoriteMovies = movies.filter((movie) =>
+    favorites.includes(movie.id)
+  );
 
   return (
     <Router>
@@ -110,6 +132,7 @@ export const MainView = () => {
                 <ProfileView
                   user={user}
                   movies={movies}
+                  favorites={favoriteMovies} // Pass favorite movies here
                   onLoggedOut={handleLogout}
                   onUserUpdate={handleUserUpdate}
                 />
@@ -118,7 +141,7 @@ export const MainView = () => {
           />
           <Route
             path="/movies/:movieId"
-            element={<MovieDetail movies={movies} />}
+            element={<MovieDetail movies={movies} onFavorite={handleFavorite} />}
           />
           <Route
             path="/"
@@ -131,7 +154,7 @@ export const MainView = () => {
                 <Row>
                   {movies.map((movie) => (
                     <Col className="mb-5" key={movie.id} md={3}>
-                      <MovieCard movie={movie} />
+                      <MovieCard movie={movie} onFavorite={handleFavorite} />
                     </Col>
                   ))}
                 </Row>
@@ -145,7 +168,7 @@ export const MainView = () => {
 };
 
 // MovieDetail Component to handle fetching movie details from URL
-const MovieDetail = ({ movies }) => {
+const MovieDetail = ({ movies, onFavorite }) => {
   const { movieId } = useParams();
   const movie = movies.find((m) => m.id === movieId);
 
@@ -155,7 +178,7 @@ const MovieDetail = ({ movies }) => {
 
   return (
     <Col md={9}>
-      <MovieView movie={movie} />
+      <MovieView movie={movie} onFavorite={onFavorite} />
     </Col>
   );
 };

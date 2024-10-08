@@ -1,26 +1,33 @@
-import React from 'react';
-import "./movie-view.scss";
-import { Link } from "react-router-dom";
+import React from "react";
+import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 
-export const MovieView = ({ movie, onBackClick }) => {
-  if (!movie) return null; // If no movie is selected, don't render
-
+export const MovieView = ({ movie, onBackClick, onFavorite }) => {
   return (
     <div className="movie-view">
-      <div>
-        <img className="w-100" src={movie.image} alt={`${movie.title} poster`} />
+      <div className="movie-poster">
+        <img src={movie.image} alt={`${movie.title} poster`} />
       </div>
-      <div>
-        <span>Title: </span>
-        <span>{movie.title}</span>
+      <div className="movie-details">
+        <h1>{movie.title}</h1>
+        <p>Directed by: {movie.director}</p>
+        <p>Summary: {movie.description}</p>
+        <Button onClick={onBackClick}>Back</Button>
+        <Button variant="primary" className="mt-2" onClick={() => onFavorite(movie.id)}>
+          Favorite
+        </Button>
       </div>
-      <div>
-        <span>Director: </span>
-        <span>{movie.director}</span>
-      </div>
-      <button onClick={onBackClick} className="back-button">
-        Back
-      </button>
     </div>
   );
+};
+
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    director: PropTypes.string,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
+  onBackClick: PropTypes.func.isRequired,
+  onFavorite: PropTypes.func.isRequired,  // Prop for favorite button
 };

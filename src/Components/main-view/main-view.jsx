@@ -105,7 +105,35 @@ export const MainView = () => {
         console.error("Error updating user favorites:", error); // Log any error
       });
   };
+  const handleRemoveFavorite = (movieTitle) => {
+    const favoriteMovies = user.FavoriteMovies || [];
 
+    if (!favoriteMovies.includes(movieTitle)) {
+      alert("Movie is not in favorites.");
+      return;
+    }
+
+    const newFavorites = favoriteMovies.filter((title) => title !== movieTitle);
+
+    fetch(`https://mega-movies-5942d1a72620.herokuapp.com/users/${user.Username}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ ...user, FavoriteMovies: newFavorites }),
+    })
+      .then((response) => response.json())
+      .then((updatedUserData) => {
+        setUser(updatedUserData);
+        setFavorites(newFavorites);
+        localStorage.setItem("favorites", JSON.stringify(newFavorites));
+        alert("Movie removed from favorites!");
+      })
+      .catch((error) => {
+        console.error("Error removing movie from favorites:", error);
+      });
+  };
   // Filter the user's favorite movies
   const favoriteMovies = movies.filter((movie) =>
     favorites.includes(movie.id)
@@ -160,6 +188,8 @@ export const MainView = () => {
                   favorites={favoriteMovies} // Pass favorite movies here
                   onLoggedOut={handleLogout}
                   onUserUpdate={handleUserUpdate}
+                  onFavorite={handleFavorite} 
+                  onRemoveFavorite={handleRemoveFavorite}
                 />
               )
             }
@@ -179,7 +209,7 @@ export const MainView = () => {
                 <Row>
                   {movies.map((movie) => (
                     <Col className="mb-5" key={movie.id} md={3}>
-                      <MovieCard movie={movie} onFavorite={handleFavorite} />
+                      <MovieCard movie={movie} onFavorite={handleFavorite} onRemoveFavorite={handleRemoveFavorite} />
                     </Col>
                   ))}
                 </Row>

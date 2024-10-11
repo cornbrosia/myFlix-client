@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card"; // Import your MovieCard component
 
-export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate }) => {
+export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onFavorite, onRemoveFavorite }) => {
   const [updatedUser, setUpdatedUser] = useState({
     username: user?.Username || "",
     password: "",
@@ -131,7 +131,7 @@ export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate }) => {
       {favoriteMovies.length > 0 ? (
         <div className="favorite-movies">
           {favoriteMovies.map((movie) => (
-            <MovieCard key={movie._id} movie={movie} />
+            <MovieCard key={movie._id} movie={movie} isFavorite onRemoveFavorite={onRemoveFavorite} />
           ))}
         </div>
       ) : (

@@ -98,7 +98,8 @@ export const MainView = () => {
       })
       .then((updatedUserData) => {
         console.log("Updated user data from backend:", updatedUserData);
-        setUser(updatedUserData); // Update the local user state
+        // setUser(updatedUserData); // Update the local user state
+        handleUserUpdate(updatedUserData)
         alert("Movie added to favorites!");
       })
       .catch((error) => {
@@ -125,7 +126,8 @@ export const MainView = () => {
     })
       .then((response) => response.json())
       .then((updatedUserData) => {
-        setUser(updatedUserData);
+        // setUser(updatedUserData);
+        handleUserUpdate(updatedUserData)
         setFavorites(newFavorites);
         localStorage.setItem("favorites", JSON.stringify(newFavorites));
         alert("Movie removed from favorites!");

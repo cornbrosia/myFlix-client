@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card"; // Import your MovieCard component
 
-export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onFavorite, onRemoveFavorite }) => {
+export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onRemoveFavorite }) => {
   const [updatedUser, setUpdatedUser] = useState({
     username: user?.Username || "",
     password: "",

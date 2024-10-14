@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MovieCard } from "../movie-card/movie-card"; // Import your MovieCard component
+import { MovieCard } from "../movie-card/movie-card"; 
+import { Row, Col, Form, Button } from "react-bootstrap"; // Import Bootstrap components
 
 export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onRemoveFavorite }) => {
   const [updatedUser, setUpdatedUser] = useState({
@@ -77,63 +78,86 @@ export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onRemoveF
   const favoriteMovies = movies.filter((m) => user.FavoriteMovies.includes(m.title));
 
   return (
-    <div className="profile-view">
-      <h2>Profile Information</h2>
-      <form onSubmit={handleUpdate}>
-        <label>
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={updatedUser.username}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={updatedUser.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={updatedUser.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Birthday:
-          <input
-            type="date"
-            name="birthday"
-            value={updatedUser.birthday}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <button type="submit">Update Information</button>
-      </form>
+    <div className="profile-view container">
+      <h2 className="my-4">Profile Information</h2>
+      <Form onSubmit={handleUpdate}>
+        <Row>
+          <Col md={6}>
+            <Form.Group controlId="formUsername" className="mb-3">
+              <Form.Label>Username:</Form.Label>
+              <Form.Control
+                type="text"
+                name="username"
+                value={updatedUser.username}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
 
-      <button onClick={handleDeregister} className="deregister-button">
-        Deregister
-      </button>
+          <Col md={6}>
+            <Form.Group controlId="formPassword" className="mb-3">
+              <Form.Label>Password:</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={updatedUser.password}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Row>
 
-      <h2>Favorite Movies</h2>
+        <Row>
+          <Col md={6}>
+            <Form.Group controlId="formEmail" className="mb-3">
+              <Form.Label>Email:</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={updatedUser.email}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+
+          <Col md={6}>
+            <Form.Group controlId="formBirthday" className="mb-3">
+              <Form.Label>Birthday:</Form.Label>
+              <Form.Control
+                type="date"
+                name="birthday"
+                value={updatedUser.birthday}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Button variant="primary" type="submit" className="me-2">
+          Update Information
+        </Button>
+        <Button variant="danger" onClick={handleDeregister}>
+          Deregister
+        </Button>
+      </Form>
+
+      <h2 className="my-4">Favorite Movies</h2>
       {favoriteMovies.length > 0 ? (
-        <div className="favorite-movies">
+        <Row className="favorite-movies">
           {favoriteMovies.map((movie) => (
-            <MovieCard key={movie._id} movie={movie} isFavorite onRemoveFavorite={onRemoveFavorite} />
+            <Col md={4} key={movie._id} className="mb-3">
+              <MovieCard
+                movie={movie}
+                isFavorite
+                onRemoveFavorite={onRemoveFavorite}
+              />
+            </Col>
           ))}
-        </div>
+        </Row>
       ) : (
         <p>No favorite movies yet.</p>
       )}

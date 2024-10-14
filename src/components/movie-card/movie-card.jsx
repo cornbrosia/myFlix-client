@@ -32,12 +32,12 @@ export const MovieCard = ({ movie, onFavorite, onRemoveFavorite, isFavorite }) =
 // PropTypes validation for MovieCard
 MovieCard.propTypes = {
   movie: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     director: PropTypes.string,
   }).isRequired,
-  onFavorite: PropTypes.func.isRequired,
+  onFavorite: PropTypes.func,
   onRemoveFavorite: PropTypes.func.isRequired, // Prop for removing a favorite
   isFavorite: PropTypes.bool.isRequired, // Boolean to check if the movie is a favorite
 };

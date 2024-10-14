@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MovieCard } from "../movie-card/movie-card"; 
+import { MovieCard } from "../movie-card/movie-card";
 import { Row, Col, Form, Button } from "react-bootstrap"; // Import Bootstrap components
 
 export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onRemoveFavorite }) => {
@@ -24,17 +24,23 @@ export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onRemoveF
     setUpdatedUser({ ...updatedUser, [name]: value });
   };
 
-  // Handle updating user information
+  // Handle updating user information with the API call
   const handleUpdate = (e) => {
     e.preventDefault();
 
+    // API call to update user information
     fetch(`https://mega-movies-5942d1a72620.herokuapp.com/users/${user.Username}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(updatedUser),
+      body: JSON.stringify({
+        Username: updatedUser.username,
+        Password: updatedUser.password,
+        Email: updatedUser.email,
+        Birthday: updatedUser.birthday,
+      }),
     })
       .then((response) => {
         if (response.ok) {

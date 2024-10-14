@@ -212,7 +212,10 @@ export const MainView = () => {
                 <Row>
                   {movies.map((movie) => (
                     <Col className="mb-5" key={movie.id} md={3}>
-                      <MovieCard movie={movie} onFavorite={handleFavorite} onRemoveFavorite={handleRemoveFavorite} />
+                      <MovieCard movie={movie} 
+                      onFavorite={handleFavorite} 
+                      onRemoveFavorite={handleRemoveFavorite}
+                      isFavorite={favorites.includes(movie._id)} />
                     </Col>
                   ))}
                 </Row>

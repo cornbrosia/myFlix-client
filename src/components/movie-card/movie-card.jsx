@@ -9,7 +9,7 @@ export const MovieCard = ({ movie, onFavorite, onRemoveFavorite, isFavorite }) =
       <Card.Body>
         <Card.Title>{movie.title}</Card.Title>
         <Card.Text>Directed by: {movie.director}</Card.Text>
-        <Link to={`/movies/${movie._id}`}>View Details</Link>
+        <Link to={`/movies/${movie.id}`}>View Details</Link>
         <div className="mt-2">
           {isFavorite ? (
             <Button

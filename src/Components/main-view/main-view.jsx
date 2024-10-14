@@ -7,6 +7,7 @@ import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import { ProfileView } from "../profile-view/profile-view";
+import { useNavigate } from "react-router-dom";
 
 export const MainView = () => {
   const [user, setUser] = useState(null);
@@ -232,10 +233,14 @@ const MovieDetail = ({ movies, onFavorite }) => {
   if (!movie) {
     return <div>Movie not found!</div>;
   }
-
+  const handleBackClick = () => {
+    navigate(-1); // This will go back to the previous page in history
+  };
   return (
     <Col md={9}>
-      <MovieView movie={movie} onFavorite={onFavorite} />
+      <MovieView movie={movie}
+       onFavorite={onFavorite}
+      onBackClick={handleBackClick} />
     </Col>
   );
 };

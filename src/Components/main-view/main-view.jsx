@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
-import { NavigationBar } from "../navigation-bar/navigation-bar";
-import { MovieCard } from "../movie-card/movie-card";
-import { MovieView } from "../movie-view/movie-view";
-import { LoginView } from "../login-view/login-view";
-import { SignupView } from "../signup-view/signup-view";
-import { ProfileView } from "../profile-view/profile-view";
+import { NavigationBar } from "../navigation-bar/navigation-bar.jsx";
+import { MovieCard } from "../movie-card/movie-card.jsx";
+import { MovieView } from "../movie-view/movie-view.jsx";
+import { LoginView } from "../login-view/login-view.jsx";
+import { SignupView } from "../signup-view/signup-view.jsx";
+import { ProfileView } from "../profile-view/profile-view.jsx";
 import { useNavigate } from "react-router-dom";
 
 export const MainView = () => {

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { createRoot } from 'react-dom/client';
 import Container from 'react-bootstrap/Container';
-import { MainView } from './Components/main-view/main-view';
+import { MainView } from './components/main-view/main-view.jsx';
 // Import statement to indicate that you need to bundle `./index.scss`
 import "./index.scss";
 // import 'bootstrap/dist/css/bootstrap.min.css';

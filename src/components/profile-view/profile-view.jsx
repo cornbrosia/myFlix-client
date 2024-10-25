@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MovieCard } from "../movie-card/movie-card";
+import { MovieCard } from "../movie-card/movie-card.jsx";
 import { Row, Col, Form, Button } from "react-bootstrap"; // Import Bootstrap components
 
 export const ProfileView = ({ user, movies, onLoggedOut, onUserUpdate, onRemoveFavorite }) => {
